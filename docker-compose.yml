@@ -1,0 +1,79 @@
+version: '3.9'
+
+services:
+  registry:
+    image: registry:2
+    ports:
+      - "5000:5000"
+    volumes:
+      - registry_data:/var/lib/registry
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+
+  db:
+    image: postgres:15
+    secrets:
+      - postgres_user
+      - postgres_password
+      - postgres_db
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/postgres_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_DB_FILE: /run/secrets/postgres_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$(cat /run/secrets/postgres_user)"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  app:
+    image: localhost:5000/loyalty_app:latest
+    depends_on:
+      - db
+    secrets:
+      - postgres_user
+      - postgres_password
+      - postgres_db
+      - fatherbot_token
+      - yclients_user_token
+      - yclients_partner_token
+      - admins_ids
+    environment:
+      FATHERBOT_TOKEN_FILE:       /run/secrets/fatherbot_token
+      YCLIENTS_USER_TOKEN_FILE:   /run/secrets/yclients_user_token
+      YCLIENTS_PARTNER_TOKEN_FILE: /run/secrets/yclients_partner_token
+      ADMINS_IDS_FILE:            /run/secrets/admins_ids
+    ports:
+      - "8000:8000"
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  postgres_data:
+  registry_data:
+
+secrets:
+  postgres_user:
+    external: true
+  postgres_password:
+    external: true
+  postgres_db:
+    external: true
+  fatherbot_token:
+    external: true
+  yclients_user_token:
+    external: true
+  yclients_partner_token:
+    external: true
+  admins_ids:
+    external: true

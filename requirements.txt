@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+sqlmodel
+asyncpg           # или aiosqlite, если SQLite
+httpx
+aiogram
+aiogram-fastapi-server
+apscheduler
+python-decouple
+alembic
+pydantic_settings
+psycopg2-binary
+tenacity
