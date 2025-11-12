@@ -66,8 +66,11 @@ cd app-loyalty
 ```
 
 ### 3. Создание Docker Secrets
-Создать все необходимые секреты. Пример (на сервере выполнить для каждого секретного значения):
+Инициализировать Docker Swarm. Создать все необходимые секреты. Пример (на сервере выполнить для каждого секретного значения):
 ```bash
+#Инициализация Docker Swarm
+sudo docker swarm init
+
 # Telegram bot token
 echo "PASTE_FATHERBOT_TOKEN_HERE" | sudo docker secret create FATHERBOT_TOKEN -
 
