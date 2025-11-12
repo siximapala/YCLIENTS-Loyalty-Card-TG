@@ -61,7 +61,7 @@ sudo systemctl enable --now docker
 ### 2. Клонирование репозитория и подготовка
 ```bash
 cd /srv
-git clone <your-repo-url>.git app-loyalty
+git clone https://github.com/siximapala/YCLIENTS-Loyalty-Card-TG.git app-loyalty
 cd app-loyalty
 ```
 
@@ -78,10 +78,14 @@ echo "PASTE_YCLIENTS_PARTNER_TOKEN_HERE" | sudo docker secret create YCLIENTS_PA
 # DATABASE_URL - можно хранить полную строку подключения
 echo "postgresql+asyncpg://dbuser:dbpass@db:5432/loyaltydb" | sudo docker secret create DATABASE_URL -
 
-# Остальные секреты
+# Остальные секреты (обязательные для работы бота)
+# ID компании на YCLIENTS
 echo "1234567" | sudo docker secret create COMPANY_ID -
+# Список Telegram ID - пользователи, для которых бот будет в режиме администратора
 echo "111111111,222222222" | sudo docker secret create ADMINS_IDS -
+# Ссылка на запись боте
 echo "https://n1234567.yclients.com" | sudo docker secret create YCLIENTS_BOOK_URL -
+# Номер телефона в поле "котакты"
 echo "+79990000000" | sudo docker secret create SUPPORT_PHONE -
 ```
 
