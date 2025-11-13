@@ -71,7 +71,7 @@ async def cmd_start(message: Message, state: FSMContext):
                 one_time_keyboard=True,
             )
             await message.answer_photo(
-                photo=FSInputFile("media/welcome.png"),
+                photo=FSInputFile("/app/app/media/welcome.png"),
                 caption="<b>Добро пожаловать в программу лояльности DOG STYLE! 💞</b>"
                         "Участвуйте и накапливайте бонусные баллы за каждое посещение.\n"
                         "Для регистрации и начала участия, пожалуйста, нажмите кнопку ниже, чтобы указать свой номер телефона.📲",
@@ -211,7 +211,7 @@ async def cmd_balance(message: Message):
 async def cmd_reserve(message: Message):
     # Отправляем картинку и текст с ссылкой
     await message.answer_photo(
-        photo=FSInputFile("media/welcome.png/"),
+        photo=FSInputFile("/app/app/media/welcome.png/"),
         caption=f"📍Перейдите по ссылке, чтобы записаться:\n\n{settings.YCLIENTS_BOOK_URL}"
     )
 
